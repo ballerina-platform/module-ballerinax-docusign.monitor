@@ -1,0 +1,471 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "v3.0",
+        "title": "Monitor API",
+        "description": "An API for an integrator to access the features of Docusign Monitor",
+        "termsOfService": "https://www.docusign.com/company/terms-and-conditions/web",
+        "contact": {
+            "name": "Docusign Developer Center",
+            "url": "https://developers.docusign.com",
+            "email": "devcenter@docusign.com"
+        },
+        "license": {
+            "name": "Terms and Conditions",
+            "url": "https://www.docusign.com/company/terms-and-conditions/web"
+        }
+    },
+    "host": "api.docusign.com",
+    "basePath": "/",
+    "schemes": [
+        "https"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "externalDocs": {
+        "description": "See the Docusign Monitor API Guide for more information.",
+        "url": "https://developers.docusign.com/docs/monitor-api/reference/"
+    },
+    "paths": {
+        "/v1/organizations/{organizationId}/stream": {
+            "get": {
+                "tags": [
+                    "DataSet"
+                ],
+                "summary": "Get the monitoring event stream",
+                "description": "Retrieves a page of Docusign Monitor events from the organization data set. Pass the cursor from a previous response to continue reading the stream.",
+                "operationId": "Api_v1_RealTimeAlerting_GetStream",
+                "parameters": [
+                    {
+                        "name": "organizationId",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "The unique identifier of the organization whose events are retrieved."
+                    },
+                    {
+                        "name": "cursor",
+                        "in": "query",
+                        "required": false,
+                        "type": "string",
+                        "description": "A location in the DataSet  that continues querying data."
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Maximum number of results to return."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A page of monitoring events together with the cursor for the next page.",
+                        "schema": {
+                            "$ref": "#/definitions/StreamResponse"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "OAuth2": []
+                    }
+                ],
+                "x-ds-methodname": "getStream",
+                "x-ds-method": "getStream",
+                "x-ds-service": "DocuMonitor",
+                "x-ds-in-sdk": true
+            }
+        }
+    },
+    "definitions": {
+        "Browser": {
+            "type": "object",
+            "properties": {
+                "family": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "Browser family name."
+                },
+                "version": {
+                    "$ref": "#/definitions/Version",
+                    "description": "The requested API version"
+                }
+            },
+            "additionalProperties": false,
+            "x-ds-definition-name": "Browser",
+            "description": "Browser details of the client.",
+            "x-ms-summary": ""
+        },
+        "Device": {
+            "type": "object",
+            "properties": {
+                "family": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "Device family."
+                },
+                "brand": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "Device brand."
+                },
+                "model": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "Device model."
+                }
+            },
+            "additionalProperties": false,
+            "x-ds-definition-name": "Device",
+            "description": "Device details of the client.",
+            "x-ms-summary": ""
+        },
+        "IpAddressLocation": {
+            "type": "object",
+            "properties": {
+                "latitude": {
+                    "type": "number",
+                    "format": "double",
+                    "x-nullable": true,
+                    "description": "Latitude of the IP address location."
+                },
+                "longitude": {
+                    "type": "number",
+                    "format": "double",
+                    "x-nullable": true,
+                    "description": "Longitude of the IP address location."
+                },
+                "country": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "Country of the IP address."
+                },
+                "state": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "State or region of the IP address."
+                },
+                "city": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "City of the IP address."
+                }
+            },
+            "additionalProperties": false,
+            "x-ds-definition-name": "IpAddressLocation",
+            "description": "Geographic location resolved from an IP address.",
+            "x-ms-summary": ""
+        },
+        "Os": {
+            "type": "object",
+            "properties": {
+                "family": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "Operating system family name."
+                },
+                "version": {
+                    "$ref": "#/definitions/Version",
+                    "description": "The requested API version"
+                }
+            },
+            "additionalProperties": false,
+            "x-ds-definition-name": "Os",
+            "description": "Operating system details of the client.",
+            "x-ms-summary": ""
+        },
+        "StreamingEventRow": {
+            "type": "object",
+            "properties": {
+                "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Time at which the event occurred."
+                },
+                "eventId": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "Unique identifier of the event."
+                },
+                "site": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "Site where the event occurred."
+                },
+                "accountId": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "Identifier of the account."
+                },
+                "organizationId": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "Identifier of the organization."
+                },
+                "userId": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "Identifier of the user who performed the action."
+                },
+                "integratorKey": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "Integrator key of the application that performed the action."
+                },
+                "userAgent": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "User agent string of the client."
+                },
+                "userAgentClientInfo": {
+                    "$ref": "#/definitions/UserAgentClientInfo",
+                    "description": ""
+                },
+                "ipAddress": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "IP address from which the event originated."
+                },
+                "ipAddressLocation": {
+                    "$ref": "#/definitions/IpAddressLocation",
+                    "description": ""
+                },
+                "object": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "Object affected by the event."
+                },
+                "action": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "Action that was performed."
+                },
+                "property": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "Property affected by the event."
+                },
+                "field": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "Field affected by the event."
+                },
+                "result": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "Result of the action."
+                },
+                "source": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "Source of the event."
+                },
+                "isUserMemberOfDomain": {
+                    "type": "boolean",
+                    "x-nullable": true,
+                    "description": "Whether the user is a member of the domain."
+                },
+                "referencedUserIsMemberOfDomain": {
+                    "type": "boolean",
+                    "x-nullable": true,
+                    "description": "Whether the referenced user is a member of the domain."
+                },
+                "referencedUserId": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "Identifier of the referenced user."
+                },
+                "proxyStatus": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "Status of the proxy used for the request."
+                },
+                "proxyType": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "Type of proxy used for the request."
+                },
+                "proxyLevel": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "Level of the proxy used for the request."
+                },
+                "latitude": {
+                    "type": "number",
+                    "format": "double",
+                    "x-nullable": true,
+                    "description": "Latitude from which the event originated."
+                },
+                "longitude": {
+                    "type": "number",
+                    "format": "double",
+                    "x-nullable": true,
+                    "description": "Longitude from which the event originated."
+                },
+                "city": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "City from which the event originated."
+                },
+                "state": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "State or region from which the event originated."
+                },
+                "country": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "Country from which the event originated."
+                },
+                "device": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "Device used by the user."
+                },
+                "browser": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "Browser used by the user."
+                },
+                "os": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "Operating system used by the user."
+                },
+                "affectedUserId": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "Identifier of the affected user."
+                },
+                "affectedUserIsMemberOfDomain": {
+                    "type": "boolean",
+                    "x-nullable": true,
+                    "description": "Whether the affected user is a member of the domain."
+                },
+                "data": {
+                    "type": "object",
+                    "additionalProperties": {},
+                    "x-nullable": true,
+                    "description": "Additional event-specific data."
+                }
+            },
+            "additionalProperties": false,
+            "x-ds-definition-name": "StreamingEventRow",
+            "description": "A single monitoring event.",
+            "x-ms-summary": ""
+        },
+        "UserAgentClientInfo": {
+            "type": "object",
+            "properties": {
+                "browser": {
+                    "$ref": "#/definitions/Browser",
+                    "description": ""
+                },
+                "device": {
+                    "$ref": "#/definitions/Device",
+                    "description": ""
+                },
+                "os": {
+                    "$ref": "#/definitions/Os",
+                    "description": ""
+                }
+            },
+            "additionalProperties": false,
+            "x-ds-definition-name": "UserAgentClientInfo",
+            "description": "Client information parsed from the user agent string of the event.",
+            "x-ms-summary": ""
+        },
+        "Version": {
+            "type": "object",
+            "properties": {
+                "major": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "Major version number."
+                },
+                "minor": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "Minor version number."
+                },
+                "patch": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "Patch version number."
+                }
+            },
+            "additionalProperties": false,
+            "x-ds-definition-name": "Version",
+            "description": "Version of a client component.",
+            "x-ms-summary": ""
+        },
+        "StreamResponse": {
+            "type": "object",
+            "properties": {
+                "resultData": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/StreamingEventRow"
+                    },
+                    "x-nullable": true,
+                    "description": "List of monitoring events in the page."
+                },
+                "endCursor": {
+                    "type": "string",
+                    "x-nullable": true,
+                    "description": "Cursor to pass in the next request to continue reading the stream."
+                }
+            },
+            "additionalProperties": false,
+            "x-ds-definition-name": "StreamResponse",
+            "description": "A page of monitoring events with the cursor for the next page.",
+            "x-ms-summary": ""
+        },
+        "DataSet": {
+            "x-ds-category": "Monitor",
+            "x-ms-summary": "Methods to fetch organization event data.",
+            "description": "Methods to fetch organization event data."
+        }
+    },
+    "securityDefinitions": {
+        "OAuth2": {
+            "type": "oauth2",
+            "flow": "accessCode",
+            "authorizationUrl": "https://account.docusign.com/oauth/auth",
+            "tokenUrl": "https://account.docusign.com/oauth/token",
+            "scopes": {
+                "signature": "Basic access to the Docusign account",
+                "impersonation": "Act on behalf of a user, required by the JWT grant"
+            },
+            "description": "OAuth 2.0 access token issued by the Docusign authorization server"
+        }
+    },
+    "security": [
+        {
+            "OAuth2": []
+        }
+    ],
+    "x-ds-devdocs": {
+        "stamp": "ca00a16 2022-10-04 12:15:28-0400"
+    },
+    "tags": [
+        {
+            "name": "DataSet",
+            "description": "The DataSet resource provides methods that allow you to fetch organization event data. The `dataSet` path parameter must be set to `monitor`."
+        }
+    ],
+    "x-ds-categories": [
+        {
+            "name": "Monitor",
+            "summary": "The Docusign Monitor API receives a data feed containing security events for your Docusign account. This data goes directly to whichever application or website you choose to integrate with Docusign's eSignature REST API.",
+            "description": "Each time an event occurs, Docusign Monitor returns JSON Data Types from a download endpoint. The endpoints include the Monitor UI, SIEMs such as Splunk, and other Customer API endpoints.\n\n**Note:** Your accounts must exist inside an organization to access this data.\n"
+        }
+    ]
+}
